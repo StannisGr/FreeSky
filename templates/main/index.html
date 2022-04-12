@@ -1,0 +1,33 @@
+{%extends 'layout/base.html'%}
+{% load static %}
+{% block style %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'layout/css/main.css' %}">
+{% endblock style %}
+{% block content %}
+<main class="main">
+    <div class="main__main-block main-block">
+        <div class="main-block__container _container">
+            <div class="main-block__body">
+                <h1 class="main-block__title title">The best travel expirience</h1>
+                <div class="main-block__text">
+                    Make adventures greate again
+                </div>
+                <form method="post" class="main-block__search-form _form" action="{% url 'index' %}">
+                    {% csrf_token %}
+                    {{ search_form.as_p }}
+					<button type="submit" class="form-button _button">Поиск</button>
+                </form>
+            </div>
+        </div>
+        <div class="main-block__image _ibg">
+            <img src="{% static 'main/images/img.jpg' %}" alt="cover">
+        </div>
+    </div>
+</main>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="{% static 'main/js/form.js' %}" ></script>
+{% endblock %}
+
+

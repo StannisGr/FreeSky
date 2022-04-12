@@ -1,0 +1,37 @@
+<div class="search-result__container _container">
+	<div class="search-result__header">
+		<h3 class="search-result__title">{{response.search.from.title}} - {{response.search.to.title}}, {{response.search.date}}</h3>
+		<p class="search-result__sub-title">Найдено: </p>
+	</div>
+	{% for value in response.segments %}
+	<div class="search-result__elem">
+		<ul class="search-result__info info">
+			<li class="info_item"><img src="{{value.thread.carrier.logo_svg}}" class="search-result__logo" alt="logo"></li>
+			<li class="info_item carrier_text">{{value.thread.carrier.title}}</li>
+		</ul>
+		<div class="search-result__row row">
+			<div class="search-result__column">
+				<div>{{value.departure}}</div>
+				<div>{{value.from.title}}</div>
+				{% if value.departure_terminal %}
+				<div>Терминал: {{value.departure_terminal}}</div>
+				{% endif %}
+			</div>
+			<div class="search-result__column">
+				<div>{{value.arrival}}</div>
+				<div>{{value.to.title}}</div>
+				{% if value.arrival_terminal %}
+				<div>Терминал: {{value.arrival_terminal}}</div>
+				{% endif %}
+			</div>
+			<div class="search-result__order order">
+				<div class="order_price"> </div>
+				<button type="submit" class="order-button _button">Выбрать билет</button>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+
+
+

@@ -1,0 +1,18 @@
+{%extends 'layout/base.html'%}
+{% load static %}
+{% block style %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'user/css/sign.css' %}">
+{% endblock %}
+{% block content %}
+<main class="main">
+	<div class="main__main-block _container">
+		<form class="sign-form" method="post" action="{% url 'sign_in' %}">
+			<h1 class="form__title">Регистрация</h1>
+			{% csrf_token %}
+			{{form.as_ul}}
+			<input class="_button" type="submit" value="Регистрация"/>
+		</form>
+	</div>
+</main>
+{% endblock %}
