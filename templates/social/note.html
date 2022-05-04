@@ -1,0 +1,45 @@
+{%extends 'layout/base.html'%}
+{% load static %}
+{% load contentnote_tags %}
+{% block style %}
+	{{block.super}}
+	<link rel="stylesheet" href="{% static 'social/css/note.css' %}">
+{% endblock %}
+{% block content %}
+<main class="_main">
+	<div class="main-block _container">
+		<div class="main-block__content-block">
+			<h1>{{ note.title }}</h1>
+			{{note.user_id.get_full_name}}, {{ note.publish_date|date }}<br>
+			<div class="main-block__content-list content-list">
+				<div class="content-item">
+					{{note.content|safe}}
+				</div>
+				<a href="{{back_url}}"> << Назад </a>
+			</div>
+		</div>
+		<div class="comments">
+			<div class="comment-head">
+				<img id="{{note.pk}}" class="note-views" src="{% static 'media/images/default/views.svg' %}" weight="30" height="30" aria-label="Просмотры" alt="Просмотры"/><div class="views-value">{{note.count_views}}</div>
+				<img id="{{note.pk}}" class="note-likes" src="{% static 'media/images/default/heart.svg' %}" weight="30" height="30" aria-label="Лайки" alt="Лайки"/><div class="likes-value">{{note.count_likes}}</div> 
+				<a href="#" class="response-note" id="{{note.pk}}">Комментировать</a>
+			</div>
+			<div class="comment-list">
+				<h3>Комментарии:</h3>
+				{% get_comments request=request note=note author=False verbose_empty=True %}
+			</div>
+		</div>
+	</div>
+</main>
+<div id="response-form-div" hidden>
+	{% create_comment_note request note.pk %}
+</div>
+{% endblock %}
+{% block scripts %}
+{{block.super}}
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}" id="ckeditor-init-script"></script>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+<script type="text/javascript" src="{% static 'social/js/note.js' %}"></script>
+{{ user.pk|json_script:'user'}}
+{{ request.COOKIES.sessionid|json_script:'session'}}
+{% endblock %}

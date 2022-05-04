@@ -1,0 +1,35 @@
+.main {
+	flex: 1 1 auto;
+}
+.main__main-block {
+	padding: 184px 0px 191px 0px;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	max-width: 509px;
+}
+
+.sign-form {
+	display: block;
+	flex-direction: column;
+	justify-content: center;
+    align-items: center;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	border-radius: 30px;
+}
+.form__title {
+	color: #252b42;
+    font-size: 30px;
+    font-weight: 800;
+    line-height: calc(80/58 *100%);
+}
+.sign-form__input{
+	width: 200px;
+	height: 40px;
+	border-radius: 5px;
+	border: solid 1px rgb(115, 115, 115);
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-bottom: 1px;
+}

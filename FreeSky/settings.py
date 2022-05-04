@@ -45,9 +45,12 @@ INSTALLED_APPS = [
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 	'rest_framework',
+	'ckeditor',
+	'ckeditor_uploader',
 	'main',
 	'user',
-	'search',
+	'social',
+	'flights',
 	'api',
 ]
 
@@ -81,6 +84,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'FreeSky.wsgi.application'
 
+CKEDITOR_CONFIGS = {
+    'default': {
+        'forcePasteAsPlainText': True
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
@@ -135,15 +143,46 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
-STATICFILES_DIR = [
-	os.path.join(BASE_DIR, "static"),
-	os.path.join(BASE_DIR, "main", "static"),
+
+STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS=[
+	STATIC_DIR,
 ]
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images/media')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media/images/')
+CKEDITOR_UPLOAD_PATH = 'uploads/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#CKEDITOR_CONFIGS
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': [
+            ['Undo', 'Redo',
+             '-', 'Bold', 'Italic', 'Underline',
+             '-', 'Link', 'Unlink', 'Anchor',
+             '-', 'Format',
+             '-', 'Maximize',
+             '-', 'Table',
+             '-', 'Image',
+             '-', 'Source',
+             '-', 'NumberedList', 'BulletedList'
+            ],
+            ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock',
+             '-', 'Font', 'FontSize', 'TextColor',
+             '-', 'Outdent', 'Indent',
+             '-', 'HorizontalRule',
+             '-', 'Blockquote'
+            ]
+        ],
+        'height': 500,
+        'width': '100%',
+        'toolbarCanCollapse': False,
+        'forcePasteAsPlainText': True
+    }
+}

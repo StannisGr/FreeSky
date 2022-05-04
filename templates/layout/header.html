@@ -1,3 +1,4 @@
+{% load static %}
 <header class="header">
     <div class="header__container _container">
         <a href="{% url 'index' %}" class="header__logo">
@@ -9,7 +10,7 @@
                     <a href="{% url 'index' %}" class="menu__link">Главная</a>
                 </li>
                 <li class="menu__item">
-                    <a href="#" class="menu__link">О путешествиях</a>
+                    <a href="{% url 'content-list' %}" class="menu__link">О путешествиях</a>
                 </li>
                 <li class="menu__item">
                     <a href="{% url 'about-us' %}" class="menu__link">О нас</a>
@@ -19,19 +20,32 @@
         <nav class="header__menu auth">
         {% if user.is_authenticated %}
             <li class="auth__item">
+				<div class="auth__img">
+				{% if user.logo.url is not none %}
+					<img src="{{user.logo.url}}" alt="logo">
+				{% else %}
+					<img src="{% static 'media/images/default/default-logo.svg' %}" alt="logo">
+				{% endif %}
+				</div>
+			</li>
+			<li class="auth__item">
+				{% if user.get_full_name is not none %}
                 <a class="auth__link" href="{% url 'profile' %}">{{ user.get_full_name }}</a>
+				{% else %}
+				<a class="auth__link" href="{% url 'profile' %}">{{ user.email }}</a>
+				{% endif %}
             </li>
             <li class="auth__item">
                 <a class="auth__link" href="{% url 'logout' %}?next={{request.path}}">Выйти</a>
             </li>
-            {% else %}
+		{% else %}
             <li class="auth__item">
                 <a class="auth__link" href="{% url 'sign_in' %}">Войти</a>
             </li>
             <li class="auth__item">
                 <a class="auth__link" href="{% url 'sign_up' %}">Зарегистрироваться</a>
             </li>
-            {% endif %}
+		{% endif %}
         </nav>
     </div>
 </header>

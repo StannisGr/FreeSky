@@ -1,0 +1,35 @@
+.main-block__content-block {
+}
+.main-block__content-list {
+}
+.content-list {
+}
+.content-item>* {
+	all: revert;
+}
+.content-item>p {
+
+}
+.content-item>ul {
+
+}
+.content-item>li {
+	
+}
+/*-------Comments-------*/
+.comments {
+}
+.comment-head {
+}
+.note-views {
+}
+.views-value {
+}
+.note-likes {
+}
+.likes-value {
+}
+.response-note {
+}
+.comment-list {
+}

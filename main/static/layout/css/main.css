@@ -104,7 +104,6 @@
 	justify-content: center;
 	align-items: center;
 }
-
 .search-result{
 	padding: 50px 100px;
 }
@@ -197,5 +196,30 @@
 	align-items: center;
 }
 .order_price{}
-.search_ui {
+.search-result-paggination {
+	align-items: center;
+	justify-items: center;
+	justify-content: center;
+}
+.paggination {
+	display: flex;
+	flex-direction: row;
+	margin: 0px 110px;
+	width: 100%;
+	max-width: 400px;
+}
+.paggination > *{
+    margin: 20px;
+}
+.paggination-button {
+	min-width: 50px;
+	min-height: 50px;
+	border-radius: 50px;
+}
+.paggination-button:hover {
+	border: rgb(37, 43, 66) solid 1px;
+}
+.button-selected {
+	background-color: rgb(37, 43, 66);
+	color: #FFF;
 }

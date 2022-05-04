@@ -1,0 +1,17 @@
+{% load static %}
+<ul class="preview-list">
+	{% for note in notes %}
+	<div class="preview-item">
+		<a class="profile-main-text" href="{{ note.get_absolute_url }}?next={{ request.path }}" > 
+		{% if note.preview_image %}
+			<div class="short-preview-image">
+				<img  src="{{ note.preview_image.url }}" alt="logo">
+			</div>
+		{% endif %}
+			<h5 class="profile-main-text">{{ note.title }}</h5>
+		</a>
+	</div>
+	{% empty %}
+		<p class="profile-sub-text">{{empty_message}}</p>
+	{% endfor %}
+</ul>

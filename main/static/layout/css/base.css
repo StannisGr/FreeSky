@@ -74,6 +74,9 @@ html, body {
 	color: #fff;
 	box-shadow: 0px 3px 5px #000;
 }
+._main{
+    flex: 1 1 auto;
+}
 /*--------------------HEADER---------------------*/
 .header {
     position: absolute;
@@ -140,6 +143,7 @@ html, body {
 .auth_list {
     flex-wrap: wrap;
     display: flex;
+	display: row;
 }
 .auth__item {
     margin: 0px 0px 0px 21px;
@@ -159,6 +163,10 @@ html, body {
     .auth__link{
         font-size: 18px;
     }
+}
+.auth__img > img {
+	height: 50px;
+	border-radius: 50%;
 }
 /*--------------------FOOTER---------------------*/
 .footer{

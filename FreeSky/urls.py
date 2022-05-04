@@ -23,5 +23,8 @@ urlpatterns = [
     path('user/', include('user.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
 	path('api/', include('api.urls')),
+	path('social/', include('social.urls')),
     path('admin/', admin.site.urls),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+	path('ckeditor/', include('ckeditor_uploader.urls')),
+]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

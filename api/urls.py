@@ -2,5 +2,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-	path('search', views.SearchAPIView.as_view(), name='search')
+	path('search', views.SearchAPI.as_view(), name='search'),
+	path('notes/update/<int:pk>', views.UpdateNoteAPI.as_view(), name='notes'),
 ]

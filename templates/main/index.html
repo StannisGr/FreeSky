@@ -1,8 +1,10 @@
 {%extends 'layout/base.html'%}
 {% load static %}
+{% load contentnote_tags %}
 {% block style %}
 {{ block.super }}
 <link rel="stylesheet" href="{% static 'layout/css/main.css' %}">
+<link rel="stylesheet" href="{% static 'social/css/preview.css' %}">
 {% endblock style %}
 {% block content %}
 <main class="main">
@@ -16,6 +18,11 @@
                 <form method="post" class="main-block__search-form _form" action="{% url 'index' %}">
                     {% csrf_token %}
                     {{ search_form.as_p }}
+					<datalist id="search_flights" class="choice_ui">
+						{% for i in settelments %}
+							<option value="{{i.name}}">
+						{% endfor %}
+					</datalist>
 					<button type="submit" class="form-button _button">Поиск</button>
                 </form>
             </div>
@@ -24,6 +31,15 @@
             <img src="{% static 'main/images/img.jpg' %}" alt="cover">
         </div>
     </div>
+	<div class="_container">
+		<div class="main-block__body">
+			<h1 class="main-block__title">Больше о путешествиях</h1>
+			<div class="main-block__text">
+				Узнайте об интересных местах для путешествий
+			</div>
+			{% get_short_preview_list request %}
+		</div>
+	</div>
 </main>
 {% endblock %}
 {% block scripts %}

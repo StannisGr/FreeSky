@@ -1,24 +1,23 @@
+from django.views.generic import CreateView
 from django.shortcuts import render
-from search.forms import SearchFlightForm
+from flights.forms import SearchFlightForm
+from flights.models import Settlement
 
 
-def get_index(request):
-	search_form = SearchFlightForm()
-	context = {
-		'search_form': search_form,
-	}
-	return render(request, 'main/index.html', context)
 
-
-def get_profile(request):
-	context = {
-
-	}
-	return render(request, 'main/profile.html', context)
+class IndexView(CreateView):
+	form_class = SearchFlightForm
+	template = 'main/index.html'
+	
+	def get(self, request):
+		context = {
+			'search_form': self.form_class(),
+			'settelments': Settlement.objects.all(),
+		}
+		return render(request, 'main/index.html', context)
 
 
 def get_about_us(request):
 	context = {
-
 	}
 	return render(request, 'main/about_us.html', context)

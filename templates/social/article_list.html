@@ -1,0 +1,32 @@
+{%extends 'layout/base.html'%}
+{% load static %}
+{% block style %}
+{{ block.super }}
+{% endblock style %}
+{% block content %}
+<main class="_main">
+	<div class="main-block _container">
+		<div class="main-block__content-block">
+			<h1>Articles</h1>
+			<ul class="main-block__content-list content-list">
+			{% for article in object_list %}
+				<li class="content-item">
+					<h3>{{ article.title }}</h3>
+					{{ article.publish_date|date }}
+					{% if article.preview_image %}
+					<div>
+						<img class="_ibg" src="{{article.preview_image.url}}" alt="logo">
+					</div> 
+					{% endif %}
+					<a href="{{ article.get_absolute_url }}?next={{ request.path }}"> Подробнее >> </a>
+				</li>
+			{% empty %}
+				<li>No articles yet.</li>
+			{% endfor %}
+			</ul>
+		</div>
+	</div>
+</main>
+{% endblock %}
+
+

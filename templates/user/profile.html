@@ -1,11 +1,89 @@
 {%extends 'layout/base.html'%}
-{% block content %}
-<h1>Личный кабинет</h1>
-<div>
-    <img src="" alt="logo">
-    <h3>{{user.get_full_name}}</h3>
-    <p>{{user.birth_date}}</p>
-    <p>{{user.email}}</p>
-    <p>{{user.profile.bio}}</p>
-</div>
+{% load static %}
+{% load contentnote_tags %}
+{% block style %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'user/css/profile.css' %}">
+<link rel="stylesheet" href="{% static 'social/css/preview.css' %}">
 {% endblock %}
+{% block content %}
+<main class="main-profile">
+	{% if user.is_authenticated %}
+<div class="profile _container">
+	<div class="profile-column profile-info">
+		<form method="POST" class="profile__change-form" enctype="multipart/form-data">
+			{% csrf_token %}
+		<div class="profile-header">
+			<div class="profile-img">
+				{% if user.logo.url is not none %}
+					<img src="{{user.logo.url}}" alt="logo">
+					{{change_form.logo}}
+				{% else %}
+					<img src="{% static 'media/images/default/default-logo.svg' %}" alt="logo">
+					{{change_form.logo}}
+				{% endif %}
+
+			</div>
+			<div class="profile_main-info">
+				<h3 class="profile-main-text">{{user.get_full_name}}</h3>
+				{{change_form.first_name.as_hidden}}
+				{{change_form.last_name.as_hidden}}
+				<p class="profile-sub-text">{{user.email}}</p>
+				{{change_form.email.as_hidden}}
+			</div>
+		</div>
+		{% if user.birth_date is not none %}
+		<p class="profile-sub-text">День рождения: <br>{{user.birth_date}}</p>
+		{{change_form.birth_date.as_hidden}}
+		{% else %}
+			<p class="profile-sub-text">День рождения: 
+				<br>{{change_form.birth_date}}
+			</p>
+		{% endif %}
+		{% if user.sex is not none %}
+			<p class="profile-sub-text">Пол: <br>{{user.sex}}</p>
+			{{change_form.sex.as_hidden}}
+		{% else %}
+			<p class="profile-sub-text">Пол: <br>{{change_form.sex}}</p>
+		{% endif %}
+		{% if user.bio is not none and user.bio != '' %}
+			<p class="profile-sub-text">О себе: <br>{{user.bio}}</i></p>
+			{{change_form.bio.as_hidden}}
+		{% else %}
+			<p class="profile-sub-text">{{change_form.bio.label}}: <br>{{change_form.bio}}</p>
+		{% endif %}
+		<button type="submit" class=" _button">Сохранить изменения</button>
+		</form>
+	</div>
+	<div class="profile-column">
+	<div class="profile-travels travels">
+		<div class="travels-header">
+			<h3 class="profile-main-text">Мои путешествия:</h3>
+		</div>
+		{% if newnote is none or newnote is False %}
+			{% get_short_preview_list request=request profile=True %}
+		{% endif %}
+	</div>
+	{% if newnote is not none and newnote is True %}
+		<h3 class="profile-main-text">Расскажите о своем путеществии.</h3>
+		<p class="profile-sub-text">Поделитесь впечетлениями или дайте советы своим читателям</p>
+		{% create_content_note request=request %}
+	{% else %}
+		<div  class="get-form">
+			<form method="get" action="">
+				<input type="hidden" name="newnote" value="1">
+				<button type="submit" class="_button">Написать о путешествии</button>
+			</form>
+			<a class="_button"  href="{% url 'index' %}" >Начать путешевие</a>
+		</div>
+	{% endif %}
+	</div>
+</div>
+{% endif %}
+</main>
+{% endblock %}
+{% block scripts %}
+{{ block.super }}
+<script src="{% static 'user/js/profile_form.js' %}"></script>
+{% endblock %}
+

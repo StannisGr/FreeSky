@@ -1,10 +1,12 @@
 class FormObserver {
 	constructor(form, textInputs) {
 		this.form = form;
+		this.mainPage = form.parentNode.parentNode.parentNode;
 		this.textInputElems = textInputs;
 		this.eventDispatcher = this.dispatchHandler.bind(this)
 		this.choiceDiv = this.createChoiceDiv();
-		this.resultDiv = this.createSearchResultDiv()
+		this.resultDiv = this.createSearchResultDiv();
+		this.data;
 	}
 	createChoiceDiv() {
 		let div = document.createElement('div');
@@ -23,6 +25,7 @@ class FormObserver {
 		this.form.addEventListener('focus', this.eventDispatcher)
 		this.form.addEventListener('blur', this.eventDispatcher)
 		this.form.addEventListener('click', this.eventDispatcher)
+		this.resultDiv.addEventListener('click', this.eventDispatcher)
 	}
 	dispatchHandler(event) {
 		switch (event.type) {
@@ -40,11 +43,14 @@ class FormObserver {
 				break
 			case 'click':
 				if (event.target.closest('.choice_element')) {
-					let text = event.target.closest('.choice_element')
+					let text = event.target.closest('.choice_element');
 					let input = text.parentNode.previousElementSibling;
 					input.value = text.innerText;
+				} else if (!event.target.closest('.button-selected') && event.target.closest('.paggination-button')) {
+					let page = event.target.closest('.paggination-button');
+					let value = page.value - 1;
+					this.getSubmitResponse(this.data, value);
 				}
-				this.choiceDiv.remove();
 				break
 			case 'submit':
 				event.preventDefault();
@@ -85,20 +91,19 @@ class FormObserver {
 		let _this = this;
 		request.onreadystatechange = function () {
 			if (request.readyState == 4 && request.status == 200) {
-				console.log(request.response);
+				_this.data = request.response;
+				console.log(_this.data)
 				_this.getSubmitResponse(request.response);
 			}
 		}
 	}
-	getSubmitResponse(responseData) {
+	getSubmitResponse(responseData, page=0) {
 		this.resultDiv.textContent = '';
 		this.resultDiv.remove();
-		let elements = []
-		this.resultDiv.innerHTML = responseData['context']
-		this.form.parentNode.parentNode.parentNode.after(this.resultDiv);
+		this.resultDiv.innerHTML = responseData['context'][page]
+		this.mainPage.after(this.resultDiv);
 	}
 }
-
 
 const observer = new FormObserver(document.querySelector('._form'),
 	document.querySelectorAll('.search_ui'));

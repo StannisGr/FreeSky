@@ -1,9 +1,9 @@
 <div class="search-result__container _container">
 	<div class="search-result__header">
-		<h3 class="search-result__title">{{response.search.from.title}} - {{response.search.to.title}}, {{response.search.date}}</h3>
+		<h3 class="search-result__title">{{search.from.title}} - {{search.to.title}}, {{search.date}}</h3>
 		<p class="search-result__sub-title">Найдено: </p>
 	</div>
-	{% for value in response.segments %}
+	{% for value in segments %}
 	<div class="search-result__elem">
 		<ul class="search-result__info info">
 			<li class="info_item"><img src="{{value.thread.carrier.logo_svg}}" class="search-result__logo" alt="logo"></li>
@@ -31,6 +31,21 @@
 		</div>
 	</div>
 	{% endfor %}
+	{% if pages|length > 1 %}
+	<nav class="search-result-paggination paggination">
+		<ul class="paggination">
+			<li><button class="paggination-button" type="button" value="&lt">&lt</button></li>
+			{% for item in pages %}
+				{% if item == current_page %}
+					<li><button class="paggination-button button-selected" type="button" value="{{item}}">{{item}}</button></li>
+				{% elif current_page|add:-2 < item and current_page|add:2 > item %}
+					<li><button class="paggination-button" type="button" value="{{item}}">{{item}}</button></li>
+				{% endif %}
+			{% endfor %}
+			<li><button class="paggination-button" type="button" value="&gt">&gt</button></li>
+		</ul>
+	</nav>
+	{% endif %}
 </div>
 
 

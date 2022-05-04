@@ -8,19 +8,23 @@
     <title>{% block title %}FreeSky{% endblock %}</title>
     {% block style %}
 	<link rel="stylesheet" href="{% static 'layout/css/base.css' %}">
+	<link rel="stylesheet" href="{% static 'social/css/form.css' %}">
 	{% endblock %}
 </head>
 <body>
 <div class="_wrapper">
+{% block header %}
 {% include 'layout/header.html' %}
+{% endblock %}
 
 {% block content %}
 
 {% endblock %}
-
+{% block footer %}
 {% include 'layout/footer.html' %}
+{% endblock %}
 </div>
-{% block scripts %} 
+{% block scripts %}
 {% endblock %}
 </body>
 </html>

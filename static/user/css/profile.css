@@ -1,0 +1,60 @@
+.main-profile {
+	margin: 120px;
+	flex: 1 1 auto;
+}
+.profile {
+	display: flex;
+	flex-direction: row;
+}
+.profile-column {
+	margin: 120px 50px;
+	min-height: 200px;
+}
+.profile-info {
+	display: flex;
+	flex-direction: column;
+}
+.profile-column> *:not(:last-child){
+	margin-bottom: 40px;
+}
+.profile-header{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+.profile-img {
+	height: 200px;
+	width: 200px;
+}
+.profile-img > img {
+	vertical-align: top;
+    height: 150px;
+    border-radius: 50%;
+}
+.profile_main-info{
+	display: flex;
+	flex-direction: column;
+}
+.profile__change-form>*:not(:last-child) {
+	margin-bottom: 10px;
+}
+.profile-main-text {
+	font-size: 24px;
+    font-weight: 700;
+    color: inherit;
+}
+.profile-sub-text {
+	color: #000;
+	font-style: italic;
+}
+.profile-travels >*:not(:last-child) {
+	margin-bottom: 20px;
+}
+.get-form {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+.get-form>*:not(:last-child) {
+	margin: 10px 10px;
+}

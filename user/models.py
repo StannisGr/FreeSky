@@ -1,24 +1,29 @@
-from datetime import datetime
 from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+
+from flights.models import Country
 from .manager import UserManager
 
 
-
-
 # Create your models here.
+def user_directory_path(instance, filename):
+	return f'users/users_{instance.email[0]}/avatar/{filename}'
+
+
 class User(AbstractBaseUser, PermissionsMixin):
-	email = models.EmailField(_('Почта'), unique=True)
+	email = models.EmailField(_('Почта'), primary_key=True)
 	first_name = models.CharField(_('Имя'), max_length=30)
 	last_name = models.CharField(_('Фамилия'), max_length=30)
-	logo = models.ImageField(_('Аватар'), null=True, blank=True)
+	logo = models.ImageField(_('Аватар'), upload_to=user_directory_path, null=True, blank=True)
 	sex = models.CharField(
-		max_length=6,
-		choices={('male', 'м'), ('female', 'ж')},
-		null=True
+		_('Пол'),
+		max_length=7,
+		choices={('мужчина', 'м'), ('женщина', 'ж')},
+		null=True,
+		blank=True
 	)
 	bio = models.TextField(_('О себе'), max_length=500, null=True, blank=True)
 	birth_date = models.DateField(_('День рождения'), null=True, blank=True)
@@ -40,7 +45,16 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 	def get_full_name(self):
 		last_name = '' if self.last_name is None else self.last_name
-		return f'{self.first_name} {self.last_name}'
+		return f'{self.first_name} {last_name}'
 
-	def user_directory_path(self, filename):
-		return f'users/{self.email[0]}/avatar/'
+class PaymentData(models.Model):
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	cc_number = models.IntegerField(_('card number'))
+	cc_expiry = models.DateField(_('expiration date'))
+	cc_code = models.SmallIntegerField(_('security code'))
+
+class Document(models.Model):
+	user = models.OneToOneField(User, on_delete=models.CASCADE)
+	citizenship = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True, blank=True)
+	pasport_series = models.SmallIntegerField(null=True, blank=True)
+	pasport_num = models.SmallIntegerField(null=True, blank=True)
