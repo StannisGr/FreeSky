@@ -1,11 +1,40 @@
-from time import time
+from typing import Optional, Any
 from django import forms
 from django.contrib.auth import password_validation
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.utils.translation import gettext_lazy as _
-from .models import User
+from .models import User, Document, PaymentData
 from django.utils import timezone
 
+
+class NormilizedCharField(forms.CharField):
+	def to_python(self, value: Optional[Any]) -> Optional[str]:
+		value = value.replace(' ', '')
+		return super().to_python(value)
+
+
+class DocumentForm(forms.ModelForm):
+	pasport_num = NormilizedCharField(widget=forms.TextInput(attrs={'class': 'change-form__input', 'data-mask':'000 000', 'placeholder': '000 000'}))
+	class Meta:
+		model = Document
+		fields = '__all__'
+		widgets = { 
+			'user': forms.HiddenInput(),
+			'citizenship': forms.Select(attrs={'class': 'change-form__input'}),
+			'pasport_series': forms.TextInput(attrs={'class': 'change-form__input'}),
+		}
+	
+
+class PaymentForm(forms.ModelForm):
+	cc_number = NormilizedCharField(widget=forms.TextInput(attrs={'class': 'change-form__input', 'data-mask':'0000 0000 0000 0000', 'placeholder': '0000 0000 0000 0000'}),)
+	class Meta:
+		model = PaymentData
+		fields = '__all__'
+		widgets = { 
+			'user': forms.HiddenInput(),
+			'cc_expiry': forms.TextInput(attrs={'class': 'change-form__input', 'data-mask':'00/00', 'placeholder': 'дд/гг'}),
+			'cc_code': forms.TextInput(attrs={'class': 'change-form__input'}),
+		}
 
 class CustomUserCreationForm(UserCreationForm):
 	password1 = forms.CharField(
@@ -45,7 +74,7 @@ class CustomUserChangeForm(forms.ModelForm):
 			'last_name': forms.TextInput(attrs={'class': 'change-form__input', 'placeholder': 'Укажите фамилию'}),
 			'logo': forms.FileInput(attrs={'class': 'change-form__input'}),
 			'birth_date': forms.SelectDateWidget(years=range(1930, timezone.now().date().year), attrs={'class': 'change-form__input'}),
-			'bio': forms.TextInput(attrs={'class': 'change-form__input', 'placeholder': 'Расскажите о себе'}),
+			'bio': forms.Textarea(attrs={'class': 'change-form__input', 'placeholder': 'Расскажите о себе', 'cols': 40, 'rows': 10}),
 		}
 
 class SingInForm(forms.Form):

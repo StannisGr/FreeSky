@@ -1,0 +1,68 @@
+{% load static %}
+{% if payments %}
+	{% for item in payments %}
+	<div class="doc-data">
+		<div class="doc-img">
+			<img src="{% static 'media/images/default/creditcard.svg' %}" alt="">
+		</div>
+		<div class="doc-data__list">
+			<div class="doc-data__item">
+				<p class="profile-sub-text">Номер карты: {{item.cc_number}}</p>
+			</div>
+			<div class="doc-data__item">
+				<p class="profile-sub-text">Срок действия: {{item.cc_expiry}}</p>
+			</div>
+			<div class="doc-data__item">
+				<p class="profile-sub-text">CVC: {{item.cc_code}}</p>
+			</div>
+		</div>
+		<div class="edit_img">
+			<img src="{% static 'media/images/default/edit.svg' %}" href="/" alt="edit">
+		</div>
+	</div>
+	{% endfor %}
+{% endif %}
+	{% if payment_form is not None %}
+	<form  method="post" class="profile__change-form">
+		{% csrf_token %}
+		{{payment_form.as_p}}
+		<button type="submit" class=" _button" name="form_name" value="payment_form">Добавить банковские данные</button>
+	</form>
+	{% else %}
+	<form method="get">
+		<input type="hidden" name="addpay" value="1">
+		<button type="submit" class="_button">Добавить банковские данные</button>
+	</form>
+	{% endif %}
+{% if documents %}
+	{% for item in documents %}
+	<div class="doc-data">
+		<div class="doc-img">
+			<img src="{% static 'media/images/default/passport.svg' %}" alt="">
+		</div>
+		<div class="doc-data__list">
+			<div class="doc-data__item">
+				<p class="profile-sub-text">Гражданство: {{item.citizenship}}</p>
+			</div>
+			<div class="doc-data__item">
+				<p class="profile-sub-text">Серия и номер документа:<br> {{item.pasport_series}} {{item.pasport_num}}</p>
+			</div>
+		</div>
+		<div class="edit_img">
+			<img src="{% static 'media/images/default/edit.svg' %}" alt="edit">
+		</div>
+	</div>
+	{% endfor %}
+{% endif %}
+{% if document_form is not None %}
+<form  method="post" class="profile__change-form">
+	{% csrf_token %}
+	{{document_form.as_p}}
+	<button type="submit" class=" _button" name="form_name" value="document_form">Добавить документ</button>
+</form>
+{% else %}
+<form method="get">
+	<input type="hidden" name="adddoc" value="1">
+	<button type="submit" class="_button">Добавить документ</button>
+</form>
+{% endif %}

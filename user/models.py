@@ -1,12 +1,32 @@
 from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
-
 from flights.models import Country
 from .manager import UserManager
 
+
+class DocumentValidator:
+
+	@staticmethod
+	def num_validator(value):
+		if not value.isdigit():
+			raise ValidationError(
+				_('Доступны только цифры')
+			)
+	
+	@staticmethod
+	def expiry_validator(value):
+		values = value.split('/')
+		for value in values:
+			if len(value) == 2:
+				DocumentValidator.num_validator(value)
+			else:
+				raise ValidationError(
+				_('Неверный формат. Необходимый формат: мм/гг')
+				)
 
 # Create your models here.
 def user_directory_path(instance, filename):
@@ -49,12 +69,25 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class PaymentData(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
-	cc_number = models.IntegerField(_('card number'))
-	cc_expiry = models.DateField(_('expiration date'))
-	cc_code = models.SmallIntegerField(_('security code'))
+	cc_number = models.CharField(_('card number'), max_length=16, validators=[DocumentValidator.num_validator])
+	cc_expiry = models.CharField(_('expiration date'), max_length=5, validators=[DocumentValidator.expiry_validator])
+	cc_code = models.CharField(_('security code'), max_length=3, validators=[DocumentValidator.num_validator])
+
+	class Meta:
+		verbose_name = 'Платежная информация'
+		verbose_name_plural = 'Платежная информация'
+
 
 class Document(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	citizenship = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True, blank=True)
-	pasport_series = models.SmallIntegerField(null=True, blank=True)
-	pasport_num = models.SmallIntegerField(null=True, blank=True)
+	pasport_series = models.CharField(null=True, blank=True, max_length=4, validators=[DocumentValidator.num_validator])
+	pasport_num = models.CharField(null=True, blank=True, max_length=6, validators=[DocumentValidator.num_validator])
+
+	def __str__(self) -> str:
+		return f'{self.user} Гражданство: {self.citizenship}'
+	
+	class Meta:
+		verbose_name = 'Документ'
+		verbose_name_plural = 'Документы'
+

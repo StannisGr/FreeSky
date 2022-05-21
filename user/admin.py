@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.forms import Textarea
 
-from .models import User
+from .models import User, Document, PaymentData
 from django.contrib.auth.admin import UserAdmin
 
 
@@ -25,3 +25,5 @@ class AdminUser(UserAdmin):
 
 
 admin.site.register(User, AdminUser)
+admin.site.register(Document)
+admin.site.register(PaymentData)

@@ -17,7 +17,7 @@
                 </div>
                 <form method="post" class="main-block__search-form _form" action="{% url 'index' %}">
                     {% csrf_token %}
-                    {{ search_form.as_p }}
+                    {{ search_form.as_ul}}
 					<datalist id="search_flights" class="choice_ui">
 						{% for i in settelments %}
 							<option value="{{i.name}}">

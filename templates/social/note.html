@@ -10,7 +10,12 @@
 	<div class="main-block _container">
 		<div class="main-block__content-block">
 			<h1>{{ note.title }}</h1>
-			{{note.user_id.get_full_name}}, {{ note.publish_date|date }}<br>
+			{% if note.adminarticle %}
+			{{note.adminarticle.get_author}}, {{ note.publish_date|date }}<br>
+			{% else %}
+			{{note.get_author}}, {{ note.publish_date|date }}<br>
+			{% endif %}
+
 			<div class="main-block__content-list content-list">
 				<div class="content-item">
 					{{note.content|safe}}

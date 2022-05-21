@@ -2,28 +2,86 @@
 {% load static %}
 {% block style %}
 {{ block.super }}
+<link rel="stylesheet" href="{% static 'social/css/note_list.css' %}">
 {% endblock style %}
 {% block content %}
 <main class="_main">
 	<div class="main-block _container">
+		<form method="get">
+		{{search_form}}
+		<button>Поиск</button>
+		</form>
 		<div class="main-block__content-block">
 			<h1>Articles</h1>
 			<ul class="main-block__content-list content-list">
-			{% for article in object_list %}
-				<li class="content-item">
-					<h3>{{ article.title }}</h3>
-					{{ article.publish_date|date }}
-					{% if article.preview_image %}
-					<div>
-						<img class="_ibg" src="{{article.preview_image.url}}" alt="logo">
-					</div> 
-					{% endif %}
-					<a href="{{ article.get_absolute_url }}?next={{ request.path }}"> Подробнее >> </a>
-				</li>
-			{% empty %}
-				<li>No articles yet.</li>
-			{% endfor %}
+				{% for article in object_list %}
+					<li class="content-item">
+						<h3 class="title-content">{{ article.title }}</h3>
+						{% if article.preview_image %}
+						<div class="content-item__img">
+							<div class="background"></div>
+							<img class="_ibg" src="{{article.preview_image.url}}" alt="logo">
+						</div> 
+						{% endif %}
+						<a class="content-item__a" href="{{ article.get_absolute_url }}?next={{ request.path }}"> Подробнее >> </a>
+						<div class="content-item__utility">
+							<ul class="utility-list">
+								<li class="licon icon-like">
+									<img src="{% static 'media/images/default/heart.svg' %}" height="20px" width="20px">
+									<a href="#">{{article.count_likes}}</a>
+								</li>
+								<li class="licon icon-view">
+									<img src="{% static 'media/images/default/views.svg' %}" height="20px" width="20px"> 
+									<a href="#">{{article.count_views}}</a></li>
+								<li class="licon icon-com">
+									<img src="{% static 'media/images/default/comment.svg' %}" height="20px" width="20px"> 
+									<a href="#">{{article.count_comments}}</a>
+								</li>
+								{% if article.tags.all %}
+									<li class="licon icon-tags">
+										<img src="{% static 'media/images/default/tag.svg' %}" height="20px" width="20px">
+									</li>
+									{% for tag in article.tags.all %}
+										<li class="licon icon-tags">
+											<a href="?text={{tag.unicode_value}}">{{tag}}</a>
+										</li>
+									{% endfor %}
+								{% endif %}
+								{% if article.location.all %}
+								<li class="licon icon-tags">
+									<img src="{% static 'media/images/default/location.svg' %}" height="20px" width="20px">
+								</li>
+								{% for location in article.location.all %}
+									<li class="licon icon-tags">
+										<a href="?location={{location}}">{{location}}</a>
+									</li>
+								{% endfor %}
+							{% endif %}
+							</ul>
+						</div>
+						<div class="licon dat">{{ article.publish_date|date }}</div>
+					</li>
+				{% empty %}
+					<li>No articles yet.</li>
+				{% endfor %}
 			</ul>
+			<div class="pagination">
+				<span class="step-links">
+					{% if page_obj.has_previous %}
+						<a href="?page=1">&laquo; first</a>
+						<a href="?page={{ page_obj.previous_page_number }}">previous</a>
+					{% endif %}
+			
+					<span class="current">
+						Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+					</span>
+			
+					{% if page_obj.has_next %}
+						<a href="?page={{ page_obj.next_page_number }}">next</a>
+						<a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+					{% endif %}
+				</span>
+			</div>
 		</div>
 	</div>
 </main>

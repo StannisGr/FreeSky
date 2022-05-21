@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
+	'django.forms',
 	'rest_framework',
 	'ckeditor',
 	'ckeditor_uploader',
@@ -82,11 +83,13 @@ TEMPLATES = [
     },
 ]
 
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
+
 WSGI_APPLICATION = 'FreeSky.wsgi.application'
 
 CKEDITOR_CONFIGS = {
     'default': {
-        'forcePasteAsPlainText': True
+        'forcePasteAsPlainText': False
     }
 }
 

@@ -8,12 +8,19 @@ class Location(models.Model):
 	class Meta:
 		verbose_name = 'Локация'
 		verbose_name_plural = 'Локации'
+		ordering = ['name']
+	
+	def __str__(self) -> str:
+		return f'{self.name}'
+	
+	def __repr__(self) -> str:
+		return {'class': self.__class__, **self.__dict__}
 
 class Country(Location):
+	
 	class Meta:
 		verbose_name = 'Страна'
 		verbose_name_plural = 'Страны'
-
 
 class Region(Location):
 	country_code = models.ForeignKey(Country, on_delete=models.PROTECT)

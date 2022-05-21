@@ -1,4 +1,3 @@
-from tkinter import N
 from django import template
 from social.models import Article
 from social.forms import ContentNoteForm, CommentNoteForm
@@ -34,10 +33,8 @@ def create_comment_note(request, note, action=''):
 	}
 
 @register.inclusion_tag('social/new_note.html')
-def create_content_note(request, action='newnote/'):
-	form = ContentNoteForm(initial={'user_id': request.user})
+def create_content_note(request, form):
 	return {
 		'request': request,
 		'form': form,
-		'action': action,
 	}
