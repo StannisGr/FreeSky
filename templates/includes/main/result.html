@@ -3,7 +3,7 @@
 		<h3 class="search-result__title">{{search.from.title}} - {{search.to.title}}, {{search.date}}</h3>
 		<p class="search-result__sub-title">Найдено: </p>
 	</div>
-	{% for value in segments %}
+	{% for value in segments.current %}
 	<div class="search-result__elem">
 		<ul class="search-result__info info">
 			<li class="info_item"><img src="{{value.thread.carrier.logo_svg}}" class="search-result__logo" alt="logo"></li>
@@ -26,7 +26,7 @@
 			</div>
 			<div class="search-result__order order">
 				<div class="order_price"> </div>
-				<button type="submit" class="order-button _button">Выбрать билет</button>
+				<button href="https://travel.yandex.ru/avia/flights/{{value.thread.number}}" type="submit" class="order-button _button">Выбрать билет</button>
 			</div>
 		</div>
 	</div>

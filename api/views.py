@@ -15,7 +15,7 @@ class SearchAPIPaggination():
 	page_size_query_param = 'page_size'
 	max_page_size = 100
 
-# Create your views here.
+# TODO: SORT BY PAST AND FUTURE FLIGHTS
 class SearchAPI(APIView):
 
 	def get(self, request):
