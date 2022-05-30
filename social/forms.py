@@ -4,7 +4,8 @@ from flights.models import Location
 from flights.models import Country, Settlement
 from social.models import Article, CommentNote, Tag
 from social.fields import TagField, CharToObjField, ChoiceTextInput
-from ckeditor.widgets import CKEditorWidget
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
+from user.services.form_manager import NoteFormBehavior
 
 
 class SearchArticleForm(forms.Form):
@@ -17,7 +18,9 @@ class SearchArticleForm(forms.Form):
 	author = forms.ChoiceField(choices=Choice.author_choice, required=False)
 	populatity = forms.ChoiceField(choices=Choice.populatity_choice, required=False)
 	publish_time = forms.ChoiceField(choices=Choice.date_choice, required=False)
-	location = forms.ModelChoiceField(
+	
+	location = CharToObjField(
+		model=Location,
 		queryset=Location.objects.filter(~Q(name='NaN') & Q(country__isnull=False) | Q(settlement__isnull=False)),
 		widget=ChoiceTextInput(
 			datalist=Location.objects.filter(~Q(name='NaN') & Q(country__isnull=False) | Q(settlement__isnull=False)),
@@ -31,7 +34,7 @@ class SearchArticleForm(forms.Form):
 		return cls.__dict__['base_fields'].keys()
 
 
-class ContentNoteForm(forms.ModelForm):
+class ContentNoteForm(forms.ModelForm, NoteFormBehavior):
 	tags = TagField(queryset=Tag.objects.all(), widget=ChoiceTextInput(datalist=Tag.objects.all(), attrs={'list': 'tags_set'}))
 	country = CharToObjField(model=Country, queryset=Country.objects.exclude(code='lNaN'), widget= ChoiceTextInput(datalist=Country.objects.all(), attrs={'list': 'country_set'}), required=False)
 	settlement = CharToObjField(model=Settlement, queryset=Settlement.objects.all(), widget= ChoiceTextInput(datalist=Settlement.objects.all(), attrs={'list': 'settlement_set'}), required=False)
@@ -51,8 +54,10 @@ class ContentNoteForm(forms.ModelForm):
 		if self.cleaned_data['settlement']:
 			instance.location.add(self.cleaned_data['settlement'])
 		return instance
+	
 
 class CommentNoteForm(forms.ModelForm):
+	content = forms.CharField(label='', widget=CKEditorUploadingWidget(config_name='comment'))
 	class Meta:
 		model=CommentNote
 		fields=('post', 'content', 'user_id')

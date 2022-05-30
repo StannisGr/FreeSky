@@ -187,5 +187,12 @@ CKEDITOR_CONFIGS = {
         'width': '100%',
         'toolbarCanCollapse': False,
         'forcePasteAsPlainText': True
-    }
+    },
+	'comment': {
+		'toolbar': [
+		],
+		'height': 80,
+		'width': 500,
+		'forcePasteAsPlainText': True
+	}
 }
