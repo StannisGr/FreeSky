@@ -1,7 +1,7 @@
 {% load static %}
-<form method='POST' enctype="multipart/form-data" action="{{action}}" class="newnote-form">
+<form method='POST' enctype="multipart/form-data" class="newnote-form">
 	{% csrf_token %}
 	{{form.media}}
 	{{form}}
-	<button id="note-button" type="submit" class="_button" name="form_name" value="note_form">Отправить</button>
+	<button id="note-button" type="submit" class="_button" name="form" value="{{form.form_name}}?{{note_pk}}">Отправить</button>
 </form>

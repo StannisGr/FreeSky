@@ -2,7 +2,7 @@ from typing import Any, Dict
 from django import forms
 from social.models import Tag
 
-# TODO: Определить даталист и виджет
+
 class ChoiceTextInput(forms.TextInput):
 	template_name = 'social/widgets/choicetext_widget.html'
 

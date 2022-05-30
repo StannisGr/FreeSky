@@ -1,14 +1,14 @@
 {% load static %}
 {% load contentnote_tags %}
-{% for comment in note.post_comment_set.all %}
+{% for comment in note.note_comment_set.all %}
 	<a name="#{{comment.pk}}">
 		{{comment.get_author}} {{ comment.publish_date|date }}
 	<p>
 	{% if author %}<a href="#{{note.pk}}" name="{{sub_comment.pk}}">{{note.get_author}}</a>,{% endif %} {{comment.content|safe}}
 	</p>
 	<div class="comment-head">
-		<img id="{{comment.pk}}" class="note-views" src="{% static 'media/images/default/views.svg' %}" weight="30" height="30" aria-label="Просмотры" alt="Просмотры"/><div class="views-value">{{comment.count_views}}</div>
-		<img id="{{comment.pk}}" class="note-likes" src="{% static 'media/images/default/heart.svg' %}" weight="30" height="30" aria-label="Лайки" alt="Лайки"/><div class="likes-value">{{comment.count_likes}}</div> 
+		<img id="{{comment.pk}}" class="note-views" src="{% static 'media/images/default/views.svg' %}" weight="30" height="30" aria-label="Просмотры" alt="Просмотры"/><div class="views-value">{{comment.views.count}}</div>
+		<img id="{{comment.pk}}" class="note-likes" src="{% static 'media/images/default/heart.svg' %}" weight="30" height="30" aria-label="Лайки" alt="Лайки"/><div class="likes-value">{{comment.likes.count}}</div> 
 		<a href="#" class="response-note" id="{{comment.pk}}">Ответить</a>
 	</div>
 	{% get_comments request=request note=comment author=True verbose_empty=False %}	

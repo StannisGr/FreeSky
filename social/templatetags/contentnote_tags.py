@@ -11,7 +11,8 @@ def get_short_preview_list(request, profile: bool=False):
 	return {
 		'request': request,
 		'notes': notes,
-		'empty_message': empty_message
+		'empty_message': empty_message,
+		'profile': profile
 	}
 
 @register.inclusion_tag('social/comments.html')
@@ -33,8 +34,9 @@ def create_comment_note(request, note, action=''):
 	}
 
 @register.inclusion_tag('social/new_note.html')
-def create_content_note(request, form):
+def create_content_note(request, form, note_pk):
 	return {
 		'request': request,
 		'form': form,
+		'note_pk': note_pk,
 	}

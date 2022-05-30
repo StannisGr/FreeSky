@@ -28,14 +28,14 @@
 							<ul class="utility-list">
 								<li class="licon icon-like">
 									<img src="{% static 'media/images/default/heart.svg' %}" height="20px" width="20px">
-									<a href="#">{{article.count_likes}}</a>
+									<a href="#">{{article.likes.count}}</a>
 								</li>
 								<li class="licon icon-view">
-									<img src="{% static 'media/images/default/views.svg' %}" height="20px" width="20px"> 
-									<a href="#">{{article.count_views}}</a></li>
+									<img src="{% static 'media/images/default/views.svg' %}" height="20px" width="20px">
+									<a href="#">{{article.views.count}}</a></li>
 								<li class="licon icon-com">
 									<img src="{% static 'media/images/default/comment.svg' %}" height="20px" width="20px"> 
-									<a href="#">{{article.count_comments}}</a>
+									<a href="#">{{article.note_comment_set.count}}</a>
 								</li>
 								{% if article.tags.all %}
 									<li class="licon icon-tags">
@@ -43,7 +43,7 @@
 									</li>
 									{% for tag in article.tags.all %}
 										<li class="licon icon-tags">
-											<a href="?text={{tag.unicode_value}}">{{tag}}</a>
+											<a href="?text={{tag.name|urlencode}}">{{tag}}</a>
 										</li>
 									{% endfor %}
 								{% endif %}

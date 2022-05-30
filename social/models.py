@@ -1,4 +1,3 @@
-from urllib import parse
 from datetime import datetime
 from django.shortcuts import reverse
 from django.db import models
@@ -14,9 +13,6 @@ def preview_img_upload_to(instance, filename):
 
 class Tag(models.Model):
 	name = models.TextField(_('Тег'), unique=True, primary_key=True)
-
-	def unicode_value(self):
-		return parse.quote(self.name)
 
 	def __str__(self):
 		return f'{self.name}'
@@ -37,21 +33,12 @@ class Note(models.Model):
 	def add_view(self, session):
 		self.views.add(session)
 		self.save()
-		return self.count_views()
+		return self.views.count()
 
 	def add_like(self, user):
 		self.likes.add(user)
 		self.save()
-		return self.count_likes()
-
-	def count_likes(self):
 		return self.likes.count()
-
-	def count_views(self):
-		return self.views.count()
-	
-	def count_comments(self):
-		return self.post_comment_set.count()
 
 class Article(Note):
 	title = models.TextField(_('Название поста'), unique=True, max_length=80)
@@ -83,7 +70,7 @@ class AdminArticle(Article):
 		return reverse('note', kwargs={'slug': self.slug,'note_pk': self.pk})
 
 class CommentNote(Note):
-	post = models.ForeignKey(Note, on_delete=models.CASCADE, related_name='post_comment_set')
+	post = models.ForeignKey(Note, on_delete=models.CASCADE, related_name='note_comment_set')
 	
 	class Meta:
 		verbose_name = 'Комментарий'

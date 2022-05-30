@@ -25,8 +25,8 @@
 		</div>
 		<div class="comments">
 			<div class="comment-head">
-				<img id="{{note.pk}}" class="note-views" src="{% static 'media/images/default/views.svg' %}" weight="30" height="30" aria-label="Просмотры" alt="Просмотры"/><div class="views-value">{{note.count_views}}</div>
-				<img id="{{note.pk}}" class="note-likes" src="{% static 'media/images/default/heart.svg' %}" weight="30" height="30" aria-label="Лайки" alt="Лайки"/><div class="likes-value">{{note.count_likes}}</div> 
+				<img id="{{note.pk}}" class="note-views" src="{% static 'media/images/default/views.svg' %}" weight="30" height="30" aria-label="Просмотры" alt="Просмотры"/><div class="views-value">{{note.views.count}}</div>
+				<img id="{{note.pk}}" class="note-likes" src="{% static 'media/images/default/heart.svg' %}" weight="30" height="30" aria-label="Лайки" alt="Лайки"/><div class="likes-value">{{note.likes.count}}</div> 
 				<a href="#" class="response-note" id="{{note.pk}}">Комментировать</a>
 			</div>
 			<div class="comment-list">

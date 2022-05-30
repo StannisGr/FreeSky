@@ -1,16 +1,34 @@
 {% load static %}
 <ul class="preview-list">
 	{% for note in notes %}
-	<div class="preview-item">
-		<a class="profile-main-text" href="{{ note.get_absolute_url }}?next={{ request.path }}" > 
-		{% if note.preview_image %}
+		<div class="preview-item item">
 			<div class="short-preview-image">
 				<img  src="{{ note.preview_image.url }}" alt="logo">
 			</div>
-		{% endif %}
-			<h5 class="profile-main-text">{{ note.title }}</h5>
-		</a>
-	</div>
+			<div class="item__main-info">
+				<h5 class="profile-main-text">
+					{{ note.title }}
+				</h5>
+				<p class="profile-sub-text">
+					{{note.content|safe|truncatechars:15}}
+				</p>
+				<a class="profile-sub-text" href="{{ note.get_absolute_url }}?next={{ request.path }}"> 
+					К статье >>
+				</a>
+			</div>
+			{% if profile %}
+			<a href="?edit_note={{note.pk}}">
+				<div class="icon_img">
+					<img src="{% static 'media/images/default/edit.svg' %}" alt="edit">
+				</div>
+			</a>
+			<a href="?delete_note={{note.pk}}">
+				<div class="icon_img">
+					<img src="{% static 'media/images/default/bin.svg' %}" alt="delete">
+				</div>
+			</a>
+			{% endif %}
+		</div>
 	{% empty %}
 		<p class="profile-sub-text">{{empty_message}}</p>
 	{% endfor %}

@@ -1,25 +1,12 @@
 from django.shortcuts import get_object_or_404, render, redirect
+from django.http import Http404
 from django.views.generic import CreateView, ListView
-from django.db.models import Count, F
 from user.models import User
 from social.models import Article
 from social.forms import CommentNoteForm, SearchArticleForm
+from social.services.notes_sort import PopularitySort
 
-class PopularitySort:
-	@staticmethod
-	def like_sorting(queryset):
-		return queryset.annotate(pop_order = Count('likes')).order_by('pop_order')
 
-	@staticmethod
-	def views_sorting(queryset):
-		return queryset.annotate(pop_order = Count('views')).order_by('pop_order')
-
-	@staticmethod
-	def popularity_sorting(queryset):
-		queryset = queryset.annotate(pop_order = (Count('views') + Count('likes') + Count('post_comment_set'))).order_by('-pop_order')
-		return queryset
-
-# Create your views here.
 class ContentPreviewsView(ListView):
 	model = Article
 	paginate_by = 8
@@ -88,9 +75,19 @@ class CreateContentNote(CreateView):
 	template_name = ''
 
 	def get(self, request):
-		user = User.objects.values('email').get(email__iexact=request.user.email)
+		user = User.objects.values('email').get(pk=request.user)
 		form = self.form_class(initial={'user': user['email']})
 		context = {
 			'form': form,
 		}
 		return render(request, 'social/new_note.html', context)
+	
+
+class DeleteContentNote(CreateView):
+	def get(self, request, note_pk):
+		note = Article.objects.get(pk=note_pk, user=request.user)
+		if note:
+			note.delete()
+			return redirect(request.path)
+		else: 
+			raise Http404 
