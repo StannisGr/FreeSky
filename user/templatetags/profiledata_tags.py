@@ -5,14 +5,18 @@ from user.forms import DocumentForm, PaymentForm
 
 register = template.Library()
 
-@register.inclusion_tag('user/profile_data.html')
-def get_personal_data(user, payment_form=None, document_form=None):
-	documents = Document.objects.filter(user=user)
+@register.inclusion_tag('user/payment_list.html')
+def get_payment_list(user):
 	payments = PaymentData.objects.filter(user=user)
 	context = {
-		'documents': documents,
 		'payments': payments,
-		'document_form': document_form,
-		'payment_form': payment_form,
+	}
+	return context
+
+@register.inclusion_tag('user/document_list.html')
+def get_document_list(user):
+	documents = Document.objects.filter(user=user)
+	context = {
+		'documents': documents,
 	}
 	return context

@@ -1,0 +1,21 @@
+{% load static %}
+{% for item in documents %}
+<div class="doc-data">
+	<div class="doc-img">
+		<img src="{% static 'media/images/default/passport.svg' %}" alt="">
+	</div>
+	<div class="doc-data__list">
+		<div class="doc-data__item">
+			<p class="profile-sub-text">Гражданство: {{item.citizenship}}</p>
+		</div>
+		<div class="doc-data__item">
+			<p class="profile-sub-text">Серия и номер документа:<br> {{item.pasport_series}} {{item.pasport_num}}</p>
+		</div>
+	</div>
+	<a href="?edit_document={{item.pk}}">
+		<div class="icon_img">
+			<img src="{% static 'media/images/default/edit.svg' %}" alt="edit">
+		</div>
+	</a>
+</div>
+{% endfor %}

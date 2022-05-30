@@ -85,12 +85,18 @@
 .doc-data__item > *:not(:last-child) {
 	margin-bottom: 10px;
 }
-.edit_img {
+.icon_img {
 	display: inline-block;
 	border-radius: 50%;
 	flex-direction: row;
 }
-.edit_img > img {
+.icon_img > img {
 	vertical-align: top;
     height: 15px;
+}
+.profile-button {
+	background-color: rgba(128, 128, 128, 0.4);
+	border-radius: 20px;
+	color: #252b42;
+	font-size: 12px;
 }

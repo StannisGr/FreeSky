@@ -1,0 +1,24 @@
+{% load static %}
+{% for item in payments %}
+<div class="doc-data">
+	<div class="doc-img">
+		<img src="{% static 'media/images/default/creditcard.svg' %}" alt="">
+	</div>
+	<div class="doc-data__list">
+		<div class="doc-data__item">
+			<p class="profile-sub-text">Номер карты: {{item.cc_number}}</p>
+		</div>
+		<div class="doc-data__item">
+			<p class="profile-sub-text">Срок действия: {{item.cc_expiry}}</p>
+		</div>
+		<div class="doc-data__item">
+			<p class="profile-sub-text">CVC: {{item.cc_code}}</p>
+		</div>
+	</div>
+	<a href="?edit_payment={{item.pk}}">
+		<div class="icon_img">
+			<img src="{% static 'media/images/default/edit.svg' %}" alt="edit">
+		</div>
+	</a>
+</div>
+{% endfor %}

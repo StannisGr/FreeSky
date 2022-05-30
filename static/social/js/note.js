@@ -23,7 +23,6 @@ class NoteEventhandler{
 				}
 				break
 			case 'load':
-				console.log('load');
 				let elem = document.querySelector('.note-views');
 				this.addView(elem);
 				document.removeEventListener('load', this.eventDispatcher);

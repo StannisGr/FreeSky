@@ -1,20 +1,27 @@
-from typing import Optional, Any
 from django import forms
-from django.contrib.auth import password_validation
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from django.utils.translation import gettext_lazy as _
-from .models import User, Document, PaymentData
 from django.utils import timezone
+from django.contrib.auth import password_validation
+from django.contrib.auth.forms import UserCreationForm
+from django.utils.translation import gettext_lazy as _
+from flights.models import Country
+from user.models import User, Document, PaymentData
+from user.fields import NormilizedCharField
+from social.fields import CharToObjField, ChoiceTextInput
+from user.services.form_manager import UserFormBehavior, DocumentFormBehavior, PaymentFormBehavior
 
 
-class NormilizedCharField(forms.CharField):
-	def to_python(self, value: Optional[Any]) -> Optional[str]:
-		value = value.replace(' ', '')
-		return super().to_python(value)
 
-
-class DocumentForm(forms.ModelForm):
+class DocumentForm(forms.ModelForm, DocumentFormBehavior):
 	pasport_num = NormilizedCharField(widget=forms.TextInput(attrs={'class': 'change-form__input', 'data-mask':'000 000', 'placeholder': '000 000'}))
+	citizenship = CharToObjField(
+		model=Country,
+		queryset=Country.objects.exclude(name='NaN'),
+		widget=ChoiceTextInput(
+			datalist=Country.objects.exclude(name='NaN'),
+			attrs={'list': 'country_set'}
+		),
+		required=False
+	)
 	class Meta:
 		model = Document
 		fields = '__all__'
@@ -25,7 +32,7 @@ class DocumentForm(forms.ModelForm):
 		}
 	
 
-class PaymentForm(forms.ModelForm):
+class PaymentForm(forms.ModelForm, PaymentFormBehavior):
 	cc_number = NormilizedCharField(widget=forms.TextInput(attrs={'class': 'change-form__input', 'data-mask':'0000 0000 0000 0000', 'placeholder': '0000 0000 0000 0000'}),)
 	class Meta:
 		model = PaymentData
@@ -59,7 +66,7 @@ class CustomUserCreationForm(UserCreationForm):
 		}
 
 
-class CustomUserChangeForm(forms.ModelForm):
+class CustomUserChangeForm(forms.ModelForm, UserFormBehavior):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		for field in self.fields:
