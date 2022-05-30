@@ -1,19 +1,11 @@
-from datetime import datetime
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.generics import UpdateAPIView
-
 from django.shortcuts import render
 from django.conf import settings
 from flights.models import Settlement
 from api.serializers import SearchInputSerializer, NoteSerializer, FormSerializer, ScheduleAdjuster
-from social.forms import CommentNoteForm
 from social.models import Note
 
-class SearchAPIPaggination():
-	page_size = 6
-	page_size_query_param = 'page_size'
-	max_page_size = 100
 
 # TODO: SORT BY PAST AND FUTURE FLIGHTS
 class SearchAPI(APIView):
@@ -27,7 +19,6 @@ class SearchAPI(APIView):
 		return Response(response)
 
 	def post(self, request):
-		pagginator = SearchAPIPaggination
 		self.serialazer_class = FormSerializer
 		data = self.serialazer_class(data=request.data)
 		data.is_valid(raise_exception=True)
@@ -62,8 +53,8 @@ class UpdateNoteAPI(APIView):
 			response = {
 				'note': {
 					'id': note.id,
-					'views': note.count_views(),
-					'likes': note.count_likes(),
+					'views': note.views.count(),
+					'likes': note.likes.count(),
 				}
 			}
 			return Response(response)
