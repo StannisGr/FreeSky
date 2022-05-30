@@ -2,6 +2,7 @@
 **/fixture
 static/media/images/*
 !static/media/images/default
+/**/migrations/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
