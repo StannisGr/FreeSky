@@ -10,24 +10,22 @@
 {% block content %}
 <main class="main-profile">
 <div class="profile _container">
+	{% define False as form_fields %}
 	<div class="profile-column profile-info">
-		{% if edit_user is True %}
-			{{user_form}}
-			<button type="submit" class=" _button" name="form_name" value="change_form">Сохранить изменения</button>
-		{% else %}
-			<form method="POST" class="profile__change-form" enctype="multipart/form-data">
-				{% csrf_token %}
-			<div class="profile-header">
-				<div class="profile-img">
-					{% if user.logo.url is not none %}
-						<img src="{{user.logo.url}}" alt="logo">
-						{{user_form.logo}}
-					{% else %}
-						<img src="{% static 'media/images/default/default-logo.svg' %}" alt="logo">
-						{{user_form.logo}}
-					{% endif %}
-				</div>
-				<div class="profile_main-info">
+		<form method="POST" class="profile__change-form" enctype="multipart/form-data">
+			{% csrf_token %}
+		<div class="profile-header">
+			<div class="profile-img">
+				{% if user.logo.url is not none %}
+					<img src="{{user.logo.url}}" alt="logo">
+					{{user_form.logo}}
+				{% else %}
+					<img src="{% static 'media/images/default/default-logo.svg' %}" alt="logo">
+					{{user_form.logo}}
+				{% endif %}
+			</div>
+			<div class="profile_main-info">
+				{% if not edit_user %}
 					<h3 class="profile-main-text">{{user.get_full_name}}</h3>
 					{{user_form.first_name.as_hidden}}
 					{{user_form.last_name.as_hidden}}
@@ -38,32 +36,43 @@
 					</a>
 					<p class="profile-sub-text">{{user.email}}</p>
 					{{user_form.email.as_hidden}}
-				</div>
+				{% else %}
+					<h3 class="profile-main-text">
+						{{user_form.first_name}}
+						{{user_form.last_name}}
+					</h3>
+					<p class="profile-sub-text">{{user_form.email}}</p>
+				{% endif %}
 			</div>
-			{% if user.birth_date is not none %}
-				<p class="profile-sub-text">День рождения: <br>{{user.birth_date}}</p>
-				{{user_form.birth_date.as_hidden}}
-			{% else %}
-				<p class="profile-sub-text">День рождения: 
-					<br>{{user_form.birth_date}}
-				</p>
-			{% endif %}
-			{% if user.sex is not none %}
-				<p class="profile-sub-text">Пол: <br>{{user.sex}}</p>
-				{{user_form.sex.as_hidden}}
-			{% else %}
-				<p class="profile-sub-text">Пол: <br>{{user_form.sex}}</p>
-			{% endif %}
-			{% if user.bio is not none and user.bio != '' %}
-				<p class="profile-sub-text">О себе: <br>{{user.bio}}</i></p>
-				{{user_form.bio.as_hidden}}
-			{% else %}
-				<p class="profile-sub-text">{{user_form.bio.label}}: <br>{{user_form.bio}}</p>
-			{% endif %}
-			<button type="submit" class="profile-button _button" name="form" value="{{user_form.form_name}}?{{request.user}}">Сохранить изменения</button>
-			</form>
+		</div>
+		{% if user.birth_date is not none and not edit_user %}
+			<p class="profile-sub-text">День рождения: <br>{{user.birth_date}}</p>
+			{{user_form.birth_date.as_hidden}}
+		{% else %}
+		{% define True as form_fields %}
+			<p class="profile-sub-text">День рождения: 
+				<br>{{user_form.birth_date}}
+			</p>
 		{% endif %}
-		{% get_payment_list user=request.user %}
+		{% if user.sex is not none and not edit_user %}
+			<p class="profile-sub-text">Пол: <br>{{user.sex}}</p>
+			{{user_form.sex.as_hidden}}
+		{% else %}
+		{% define True as form_fields  %}
+			<p class="profile-sub-text">Пол: <br>{{user_form.sex}}</p>
+		{% endif %}
+		{% if user.bio is not none and user.bio != '' and not edit_user %}
+			<p class="profile-sub-text">О себе: <br>{{user.bio}}</i></p>
+			{{user_form.bio.as_hidden}}
+		{% else %}
+		{% define True as form_fields %}
+			<p class="profile-sub-text">{{user_form.bio.label}}: <br>{{user_form.bio}}</p>
+		{% endif %}
+		{% if form_field or edit_user %}
+			<button type="submit" class="profile-button _button" name="form" value="{{user_form.form_name}}?{{request.user}}">Сохранить изменения</button>
+		{% endif %}
+			</form>
+		{% get_payment_list user=request.user redirect_url=request.path %}
 		{% if addpay is True or edit_payment %}
 			<form  method="post" class="profile__change-form">
 				{% csrf_token %}
@@ -76,7 +85,7 @@
 				<button type="submit" class="profile-button _button">Добавить банковские данные</button>
 			</form>
 		{% endif %}
-		{% get_document_list user=request.user %}
+		{% get_document_list user=request.user redirect_url=request.path %}
 		{% if adddoc is True or edit_document %}
 			<form  method="post" class="profile__change-form">
 				{% csrf_token %}

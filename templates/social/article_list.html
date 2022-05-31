@@ -23,7 +23,10 @@
 							<img class="_ibg" src="{{article.preview_image.url}}" alt="logo">
 						</div> 
 						{% endif %}
-						<a class="content-item__a" href="{{ article.get_absolute_url }}?next={{ request.path }}"> Подробнее >> </a>
+						<a class="content-item__a" href="
+						{% if article.adminarticle %}
+						{{ article.adminarticle.get_absolute_url }}
+						{% else %}{{ article.get_absolute_url }}{% endif %}?next={{ request.path }}"> Подробнее >> </a>
 						<div class="content-item__utility">
 							<ul class="utility-list">
 								<li class="licon icon-like">
@@ -48,15 +51,15 @@
 									{% endfor %}
 								{% endif %}
 								{% if article.location.all %}
-								<li class="licon icon-tags">
-									<img src="{% static 'media/images/default/location.svg' %}" height="20px" width="20px">
-								</li>
-								{% for location in article.location.all %}
 									<li class="licon icon-tags">
-										<a href="?location={{location}}">{{location}}</a>
+										<img src="{% static 'media/images/default/location.svg' %}" height="20px" width="20px">
 									</li>
-								{% endfor %}
-							{% endif %}
+									{% for location in article.location.all %}
+										<li class="licon icon-tags">
+											<a href="?location={{location}}">{{location}}</a>
+										</li>
+									{% endfor %}
+								{% endif %}
 							</ul>
 						</div>
 						<div class="licon dat">{{ article.publish_date|date }}</div>

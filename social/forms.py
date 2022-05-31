@@ -35,7 +35,7 @@ class SearchArticleForm(forms.Form):
 
 
 class ContentNoteForm(forms.ModelForm, NoteFormBehavior):
-	tags = TagField(queryset=Tag.objects.all(), widget=ChoiceTextInput(datalist=Tag.objects.all(), attrs={'list': 'tags_set'}))
+	tags = TagField(queryset=Tag.objects.all(), widget=ChoiceTextInput(datalist=Tag.objects.all(), attrs={'list': 'tags_set'}), required=False)
 	country = CharToObjField(model=Country, queryset=Country.objects.exclude(code='lNaN'), widget= ChoiceTextInput(datalist=Country.objects.all(), attrs={'list': 'country_set'}), required=False)
 	settlement = CharToObjField(model=Settlement, queryset=Settlement.objects.all(), widget= ChoiceTextInput(datalist=Settlement.objects.all(), attrs={'list': 'settlement_set'}), required=False)
 	class Meta:

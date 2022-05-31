@@ -17,5 +17,10 @@
 			<img src="{% static 'media/images/default/edit.svg' %}" alt="edit">
 		</div>
 	</a>
+	<a href="{% url 'delete_doc' item.pk %}?next={{redirect_url}}">
+		<div class="icon_img">
+			<img src="{% static 'media/images/default/bin.svg' %}" alt="delete">
+		</div>
+	</a>
 </div>
 {% endfor %}

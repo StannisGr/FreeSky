@@ -43,12 +43,13 @@ class TagField(forms.ModelMultipleChoiceField):
 
 	def to_python(self, value):
 		object_array = []
-		value = value.replace(',', '')
-		value = value.replace(';', '')
-		for name in value.strip().split(' '):
-			name = name if name[0] == '#' else f'#{name}'
-			obj, created = self.model.objects.get_or_create(name=name)
-			object_array.append(obj)
+		if value:
+			value = value.replace(',', '')
+			value = value.replace(';', '')
+			for name in value.strip().split(' '):
+				name = name if name[0] == '#' else f'#{name}'
+				obj, created = self.model.objects.get_or_create(name=name)
+				object_array.append(obj)
 		return object_array
 
 	def clean(self, value: Any):

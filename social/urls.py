@@ -16,11 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
-from .views import CreateContentNote, ContentPreviewsView, ContentView
+from .views import CreateContentNote, ContentPreviewsView, ContentView, DeleteContentNote
 
 
 urlpatterns = [
     path('', ContentPreviewsView.as_view(), name='content-list'),
 	path('note/<note_pk>/',ContentView.as_view(), name='note'),
-	path('new/', CreateContentNote.as_view(), name='new-post'),
+	path('note/<slug:slug>/<int:note_pk>/', ContentView.as_view()),
+	# path('note/<slug:slug>/',ContentView.as_view(), name='note'),
+	# path('new/', CreateContentNote.as_view(), name='new-post'),
+	path('note/settings/delete/note/<int:note_pk>/', DeleteContentNote.as_view(), name='delete_note'),
 ]

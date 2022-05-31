@@ -1,8 +1,9 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import Http404
+from django.http.request import QueryDict
 from django.views.generic import CreateView, ListView
 from user.models import User
-from social.models import Article
+from social.models import Article, Note
 from social.forms import CommentNoteForm, SearchArticleForm
 from social.services.notes_sort import PopularitySort
 
@@ -49,8 +50,6 @@ class ContentPreviewsView(ListView):
 			queryset = self.pop_strategy[self.search_params['populatity']](queryset)
 		return queryset
 
-
-
 class ContentView(CreateView):
 	template_name = 'social/note.html'
 
@@ -81,13 +80,13 @@ class CreateContentNote(CreateView):
 			'form': form,
 		}
 		return render(request, 'social/new_note.html', context)
-	
+
 
 class DeleteContentNote(CreateView):
+	success_url = '/'
+	# form_class = DeletionCheckForm
+
 	def get(self, request, note_pk):
-		note = Article.objects.get(pk=note_pk, user=request.user)
-		if note:
-			note.delete()
-			return redirect(request.path)
-		else: 
-			raise Http404 
+		note = get_object_or_404(Note, pk=note_pk, user_id=request.user)
+		note.delete()
+		return redirect(request.GET.get('next', self.success_url))

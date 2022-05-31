@@ -1,17 +1,14 @@
-from django.forms import ModelForm
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DeleteView
+from user.models import Document, PaymentData
 from user.forms import CustomUserCreationForm, SingInForm, CustomUserChangeForm, DocumentForm, PaymentForm
 from social.forms import ContentNoteForm
-from user.models import User
 from user.backend import UserBackend
 from user.services.form_manager import FormManager
+from django.shortcuts import get_object_or_404
 
-# Create your views here.
-class FormMixin:
-	pass
-	
+
 class ProfileView(CreateView):
 
 	template_name = 'user/profile.html'
@@ -94,3 +91,29 @@ class SingInView(CreateView):
 				'form': form
 			}
 			return render(request, self.template_name, context=context)
+
+
+class DeleteDocumentView(CreateView):
+	success_url = '/'
+	model = Document
+
+	def get(self, request, document_pk):
+		model = get_object_or_404(self.model, pk=document_pk, user_id=request.user)
+		model.delete()
+		success_url = request.GET.get('next', '')
+		if success_url:
+			self.success_url = success_url
+		return redirect(request.GET.get('next', self.success_url))
+
+
+class DeletePaymentView(CreateView):
+	success_url = '/'
+	model = PaymentData
+
+	def get(self, request, payment_pk):
+		model = get_object_or_404(self.model, pk=payment_pk, user_id=request.user)
+		model.delete()
+		success_url = request.GET.get('next', '')
+		if success_url:
+			self.success_url = success_url
+		return redirect(self.success_url)

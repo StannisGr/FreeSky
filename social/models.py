@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from django.shortcuts import reverse
 from django.db import models
@@ -25,7 +26,7 @@ class Note(models.Model):
 	publish_date = models.DateTimeField(_('Дата публикации'), default=datetime.now())
 
 	def __str__(self) -> str:
-		return f'{self.user}, {self.publish_date}'
+		return f'{self.user_id}, {self.publish_date}'
 
 	def get_author(self):
 		return f'{self.user_id.get_full_name()}'
@@ -51,7 +52,10 @@ class Article(Note):
 		verbose_name_plural = 'Посты'
 	
 	def get_absolute_url(self):
-		return reverse('note', kwargs={'note_pk':self.pk})
+		return reverse('note', kwargs={'note_pk': self.pk})
+	
+	def get_delete_url(self):
+		return reverse('delete_note', kwargs={'note_pk': self.pk})
 	
 	def __str__(self) -> str:
 		return f'{self.title}'

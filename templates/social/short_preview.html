@@ -22,7 +22,7 @@
 					<img src="{% static 'media/images/default/edit.svg' %}" alt="edit">
 				</div>
 			</a>
-			<a href="?delete_note={{note.pk}}">
+			<a href="{{note.get_delete_url}}?next={{ request.path }}">
 				<div class="icon_img">
 					<img src="{% static 'media/images/default/bin.svg' %}" alt="delete">
 				</div>
