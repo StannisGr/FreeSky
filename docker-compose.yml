@@ -1,0 +1,33 @@
+version: '3.8'
+volumes:
+  data:
+
+services:
+  database:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+    volumes:
+      - data:/db/
+
+  web:
+    container_name: freesky
+    build: ./FreeSky/
+    restart: always
+    command: 
+      sh -c "python manage.py makemigrations && 
+             python manage.py migrate &&
+             python manage.py fixture_create &&
+             python manage.py loaddata flights/fixture/search.json &&
+             python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - 8000:8000
+    depends_on:
+      - database
+    env_file:
+      - .env
+    volumes:
+      - data:/code/
