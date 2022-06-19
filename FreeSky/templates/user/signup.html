@@ -7,7 +7,7 @@
 {% block content %}
 <main class="main">
 	<div class="main__main-block _container">
-		<form class="sign-form" method="post" action="{% url 'sign_in' %}">
+		<form class="sign-form" method="post">
 			<h1 class="form__title">Регистрация</h1>
 			{% csrf_token %}
 			{{form.as_ul}}
