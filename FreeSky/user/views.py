@@ -1,20 +1,22 @@
 from django.contrib.auth import login
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import CreateView, DetailView, View
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from user.models import Document, PaymentData
 from user.forms import CustomUserCreationForm, SingInForm, CustomUserChangeForm, DocumentForm, PaymentForm
 from social.forms import ContentNoteForm
 from user.backend import UserBackend
 from user.services.form_manager import FormManager
-from django.shortcuts import get_object_or_404
 
 
-class ProfileView(View):
+class CustomLoginRequiredMixin(LoginRequiredMixin):
+	login_url = '/user/signin/'
 
+
+class ProfileView(LoginRequiredMixin, View):
 	template_name = 'user/profile.html'
-	success_url = '/user/profile'
-
+	success_url = 'user/profile'
 	forms = FormManager([CustomUserChangeForm, DocumentForm, PaymentForm, ContentNoteForm])
 
 	def get_context(self, request, **kwargs):
@@ -93,7 +95,7 @@ class SingInView(View):
 			return self.error_form_response(request, form)
 		
 	def get_success_url(self):
-		return self.request.POST.get('next', self.success_url)
+		return self.request.GET.get('next', self.success_url)
 
 	def error_form_response(self, request, form):
 		context = {
@@ -101,7 +103,7 @@ class SingInView(View):
 		}
 		return render(request, self.template_name, context)
 
-class DeleteDocumentView(CreateView):
+class DeleteDocumentView(LoginRequiredMixin, CreateView):
 	success_url = '/'
 	model = Document
 
@@ -114,7 +116,7 @@ class DeleteDocumentView(CreateView):
 		return redirect(request.GET.get('next', self.success_url))
 
 
-class DeletePaymentView(CreateView):
+class DeletePaymentView(LoginRequiredMixin, CreateView):
 	success_url = '/'
 	model = PaymentData
 
