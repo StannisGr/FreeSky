@@ -1,8 +1,8 @@
 from django.shortcuts import redirect
 from django.views.generic import View
 from django.shortcuts import render
-from flights.forms import SearchFlightForm
-from flights.models import Settlement
+from locations.forms import SearchFlightForm
+from locations.models import Settlement
 
 
 

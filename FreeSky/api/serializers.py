@@ -1,11 +1,10 @@
 from django.shortcuts import render
 from rest_framework import serializers
 from django.contrib.sessions.models import Session
-from flights.models import Settlement
+from locations.models import Settlement
 from social.models import Note
 from user.models import User
 from datetime import datetime, timezone
-import pytz
 
 
 class NoteSerializer(serializers.ModelSerializer):

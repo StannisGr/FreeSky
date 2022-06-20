@@ -14,7 +14,7 @@ class CustomLoginRequiredMixin(LoginRequiredMixin):
 	login_url = '/user/signin/'
 
 
-class ProfileView(LoginRequiredMixin, View):
+class ProfileView(CustomLoginRequiredMixin, View):
 	template_name = 'user/profile.html'
 	success_url = 'user/profile'
 	forms = FormManager([CustomUserChangeForm, DocumentForm, PaymentForm, ContentNoteForm])
@@ -77,6 +77,8 @@ class SingInView(View):
 	success_url = '/'
 	template_name = 'user/signin.html'
 
+	standart_redirect = {'/user/signin/', '/user/signup/'}
+	
 	def get(self, request, *args, **kwargs):
 		form = self.form_class(request.GET)
 		return render(request, self.template_name, context={'form': form})
@@ -95,7 +97,8 @@ class SingInView(View):
 			return self.error_form_response(request, form)
 		
 	def get_success_url(self):
-		return self.request.GET.get('next', self.success_url)
+		success_url = self.request.GET.get('next', self.success_url)
+		return success_url if success_url not in self.standart_redirect else self.success_url
 
 	def error_form_response(self, request, form):
 		context = {

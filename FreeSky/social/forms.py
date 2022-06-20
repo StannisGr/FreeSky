@@ -1,7 +1,7 @@
 from django import forms
 from django.db.models import Q
-from flights.models import Location
-from flights.models import Country, Settlement
+from locations.models import Location
+from locations.models import Country, Settlement
 from social.models import Article, CommentNote, Tag
 from social.fields import TagField, CharToObjField, ChoiceTextInput
 from ckeditor_uploader.widgets import CKEditorUploadingWidget

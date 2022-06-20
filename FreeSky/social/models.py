@@ -4,7 +4,7 @@ from django.shortcuts import reverse
 from django.db import models
 from django.contrib.sessions.models import Session
 from user.models import User
-from flights.models import Location
+from locations.models import Location
 from django.utils.translation import gettext_lazy as _
 from ckeditor_uploader.fields import RichTextUploadingField
 

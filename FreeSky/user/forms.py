@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.contrib.auth import password_validation
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import gettext_lazy as _
-from flights.models import Country
+from locations.models import Country
 from user.models import User, Document, PaymentData
 from user.fields import NormilizedCharField
 from social.fields import CharToObjField, ChoiceTextInput

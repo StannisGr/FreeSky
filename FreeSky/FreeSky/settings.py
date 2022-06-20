@@ -45,13 +45,14 @@ INSTALLED_APPS = [
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 	'django.forms',
+	'django_rename_app',
 	'rest_framework',
 	'ckeditor',
 	'ckeditor_uploader',
 	'main',
 	'user',
 	'social',
-	'flights',
+	'locations',
 	'api',
 ]
 
