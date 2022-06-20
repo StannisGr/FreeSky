@@ -102,15 +102,17 @@ DATABASES = {
         'NAME': env('DB_NAME'),
         'USER': env('DB_USER'),
         'PASSWORD': env('DB_PASS'),
-        'HOST': 'database',
+        'HOST': env('DB_HOST', 'localhost'),
         'PORT': 5432,
+		'OPTIONS': {
+            'options': '-c search_path=public',
+        },
     }
 }
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 AUTH_USER_MODEL = 'user.User'
-LOGIN_REDIRECT_URL = '/'
-
+AUTHENTICATION_BACKENDS = ['user.backend.UserBackend']
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 

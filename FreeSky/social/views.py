@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import Http404
 from django.http.request import QueryDict
-from django.views.generic import CreateView, ListView
+from django.views.generic import View, ListView
 from user.models import User
 from social.models import Article, Note
 from social.forms import CommentNoteForm, SearchArticleForm
@@ -50,7 +50,7 @@ class ContentPreviewsView(ListView):
 			queryset = self.pop_strategy[self.search_params['populatity']](queryset)
 		return queryset
 
-class ContentView(CreateView):
+class ContentView(View):
 	template_name = 'social/note.html'
 
 	def get(self, request, note_pk):
@@ -68,7 +68,7 @@ class ContentView(CreateView):
 			form.save()
 		return redirect(f'{request.get_full_path()}#{form.data["post"]}')
 
-class CreateContentNote(CreateView):
+class CreateContentNote(View):
 	form_class = CommentNoteForm
 	success_url = 'social/'
 	template_name = ''
@@ -82,7 +82,7 @@ class CreateContentNote(CreateView):
 		return render(request, 'social/new_note.html', context)
 
 
-class DeleteContentNote(CreateView):
+class DeleteContentNote(View):
 	success_url = '/'
 	# form_class = DeletionCheckForm
 

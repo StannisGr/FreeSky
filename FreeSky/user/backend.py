@@ -1,22 +1,33 @@
+from pyexpat import model
+from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import BaseBackend
-from .models import User
 from django.core.exceptions import ObjectDoesNotExist
 
 
 class UserBackend(BaseBackend):
-    def authenticate(self, request, **kwargs):
-        email = kwargs.get('email')
-        password = kwargs.get('password')
-        try:
-            user = User.objects.get(email__iexact=email)
-            pass_validator = user.check_password(password)
-            if pass_validator:
-                return user
-        except ObjectDoesNotExist:
-            return None
 
-    def get_user(self, user_id):
-        try:
-            return User.objects.get(pk=user_id)
-        except:
-            return None
+	def get_user_model(func):
+		UserModel = get_user_model()
+		def wrapper(self, *args, **kwargs):
+			kwargs.setdefault('model', UserModel)
+			return func(self, *args, **kwargs)
+		return wrapper
+
+	@get_user_model
+	def authenticate(self, request, **kwargs):
+		email = kwargs.get('email')
+		password = kwargs.get('password')
+		try:
+			user = kwargs.get('model').objects.get(email__iexact=email)
+			pass_validator = user.check_password(password)
+			if pass_validator:
+				return user
+		except ObjectDoesNotExist:
+			return None
+
+	@get_user_model
+	def get_user(self, user_id, **kwargs):
+		try:
+			return kwargs.get('model').objects.get(pk=user_id)
+		except:
+			return None

@@ -36,14 +36,14 @@
 				{% endif %}
             </li>
             <li class="auth__item">
-                <a class="auth__link" href="{% url 'logout' %}?next={{request.path}}">Выйти</a>
+                <a class="auth__link" href="{% url 'logout' %}?next=/">Выйти</a>
             </li>
 		{% else %}
             <li class="auth__item">
-                <a class="auth__link" href="{% url 'sign_in' %}">Войти</a>
+                <a class="auth__link" href="{% url 'sign_in' %}?next={{request.path}}">Войти</a>
             </li>
             <li class="auth__item">
-                <a class="auth__link" href="{% url 'sign_up' %}">Зарегистрироваться</a>
+                <a class="auth__link" href="{% url 'sign_up' %}?next={{request.path}}">Зарегистрироваться</a>
             </li>
 		{% endif %}
         </nav>

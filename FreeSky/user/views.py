@@ -1,6 +1,7 @@
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
-from django.views.generic import CreateView, DeleteView
+from django.views.generic import CreateView, DetailView, View
+from django.urls import reverse
 from user.models import Document, PaymentData
 from user.forms import CustomUserCreationForm, SingInForm, CustomUserChangeForm, DocumentForm, PaymentForm
 from social.forms import ContentNoteForm
@@ -9,7 +10,7 @@ from user.services.form_manager import FormManager
 from django.shortcuts import get_object_or_404
 
 
-class ProfileView(CreateView):
+class ProfileView(View):
 
 	template_name = 'user/profile.html'
 	success_url = '/user/profile'
@@ -52,24 +53,24 @@ class ProfileView(CreateView):
 				return render(request, self.template_name, context)
 		return redirect(self.success_url)
 
+
 class SingUpView(CreateView):
 	form_class = CustomUserCreationForm
 	success_url = '/'
 	template_name = 'user/signup.html'
 
-	def post(self, request, *args, **kwargs):
-		form = CustomUserCreationForm(request.POST)
-		if form.is_valid():
-			user = form.save(commit=False)
-			user.save()
-			return redirect(self.success_url)
-		else:
-			context = {
-				'form': form
-			}
-			return render(request, self.template_name, context=context)
+	def get_context_data(self, *args, **kwargs):
+		context = super(SingUpView, self).get_context_data(*args, **kwargs)
+		context['next'] = self.request.GET.get('next',  self.success_url)
+		return context
+		
+	def get_success_url(self):
+		next_url = self.request.GET.get('next')
+		succes_url = reverse('sign_in') + f'?next={next_url}'
+		return succes_url
 
-class SingInView(CreateView):
+
+class SingInView(View):
 	form_class = SingInForm
 	success_url = '/'
 	template_name = 'user/signin.html'
@@ -82,20 +83,23 @@ class SingInView(CreateView):
 		form = self.form_class(request.POST)
 		auth = UserBackend()
 		if form.is_valid():
-			user = auth.authenticate(request, email=form.cleaned_data['email'], password=form.cleaned_data['password'])
+			user = auth.authenticate(request, **form.cleaned_data)
 			if user is not None:
-				login(request, user)
-				return redirect(self.success_url)
+				login(request, user, 'user.backend.UserBackend')
+				return redirect(self.get_success_url())
 			else:
-				self.error_form_response(request, form)
+				return self.error_form_response(request, form)
 		else:
-			self.error_form_response(request, form)
+			return self.error_form_response(request, form)
+		
+	def get_success_url(self):
+		return self.request.POST.get('next', self.success_url)
 
 	def error_form_response(self, request, form):
 		context = {
 			'form': form
-			}
-		return (request, self.template_name, context)
+		}
+		return render(request, self.template_name, context)
 
 class DeleteDocumentView(CreateView):
 	success_url = '/'

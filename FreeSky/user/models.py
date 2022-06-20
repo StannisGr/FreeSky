@@ -49,13 +49,13 @@ class User(AbstractBaseUser, PermissionsMixin):
 	birth_date = models.DateField(_('День рождения'), null=True, blank=True)
 	date_joined = models.DateField(_('Дата регистрации'), default=timezone.now)
 	is_staff = models.BooleanField(default=False)
-	is_active = models.BooleanField(default=False)
+	is_active = models.BooleanField(default=True)
 
 	objects = UserManager()
 
 	USERNAME_FIELD = 'email'
 	REQUIRED_FIELDS = ['first_name', 'last_name']
-
+	
 	class Meta:
 		verbose_name = 'Пользователь'
 		verbose_name_plural = 'Пользователи'

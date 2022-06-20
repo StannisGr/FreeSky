@@ -10,7 +10,6 @@ from social.fields import CharToObjField, ChoiceTextInput
 from user.services.form_manager import UserFormBehavior, DocumentFormBehavior, PaymentFormBehavior
 
 
-
 class DocumentForm(forms.ModelForm, DocumentFormBehavior):
 	pasport_num = NormilizedCharField(widget=forms.TextInput(attrs={'class': 'change-form__input', 'data-mask':'000 000', 'placeholder': '000 000'}))
 	citizenship = CharToObjField(
@@ -30,7 +29,6 @@ class DocumentForm(forms.ModelForm, DocumentFormBehavior):
 			'citizenship': forms.Select(attrs={'class': 'change-form__input'}),
 			'pasport_series': forms.TextInput(attrs={'class': 'change-form__input'}),
 		}
-	
 
 class PaymentForm(forms.ModelForm, PaymentFormBehavior):
 	cc_number = NormilizedCharField(widget=forms.TextInput(attrs={'class': 'change-form__input', 'data-mask':'0000 0000 0000 0000', 'placeholder': '0000 0000 0000 0000'}),)
@@ -64,6 +62,13 @@ class CustomUserCreationForm(UserCreationForm):
 			'last_name': forms.TextInput(attrs={'class': 'sign-form__input'}),
 			'email': forms.TextInput(attrs={'class': 'sign-form__input'}),
 		}
+
+	def save(self, commit=True):
+		user = super().save(commit=False)
+		user.set_password(self.cleaned_data['password1'])
+		if commit:
+			user.save()
+		return user
 
 
 class CustomUserChangeForm(forms.ModelForm, UserFormBehavior):

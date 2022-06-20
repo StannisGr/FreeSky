@@ -1,11 +1,12 @@
-from django.views.generic import CreateView
+from django.shortcuts import redirect
+from django.views.generic import View
 from django.shortcuts import render
 from flights.forms import SearchFlightForm
 from flights.models import Settlement
 
 
 
-class IndexView(CreateView):
+class IndexView(View):
 	form_class = SearchFlightForm
 	template = 'main/index.html'
 	
@@ -18,6 +19,4 @@ class IndexView(CreateView):
 
 
 def get_about_us(request):
-	context = {
-	}
-	return render(request, 'main/about_us.html', context)
+	return redirect('/')
