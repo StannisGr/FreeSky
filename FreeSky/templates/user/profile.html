@@ -105,7 +105,7 @@
 			<div class="travels-header">
 				<h3 class="profile-main-text">Мои путешествия:</h3>
 			</div>
-			{% get_short_preview_list request=request profile=True %}
+			{% get_user_preview_note_list request=request %}
 		{% endif %}
 	</div>
 	{% if newnote is not none and newnote is True or edit_note %}

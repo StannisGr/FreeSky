@@ -16,18 +16,6 @@
 					К статье >>
 				</a>
 			</div>
-			{% if profile %}
-			<a href="?edit_note={{note.pk}}">
-				<div class="icon_img">
-					<img src="{% static 'media/images/default/edit.svg' %}" alt="edit">
-				</div>
-			</a>
-			<a href="{{note.get_delete_url}}?next={{ request.path }}">
-				<div class="icon_img">
-					<img src="{% static 'media/images/default/bin.svg' %}" alt="delete">
-				</div>
-			</a>
-			{% endif %}
 		</div>
 	{% empty %}
 		<p class="profile-sub-text">{{empty_message}}</p>

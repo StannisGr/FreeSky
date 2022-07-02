@@ -1,18 +1,28 @@
 from django import template
 from social.models import Article
-from social.forms import ContentNoteForm, CommentNoteForm
+from social.forms import CommentNoteForm
+
 
 register = template.Library()
 
-@register.inclusion_tag('social/short_preview.html')
-def get_short_preview_list(request, profile: bool=False):
-	empty_message = 'Здесь пока нет ваших путешествий... Время пополнить список!' if profile else 'Постов нет'
-	notes = Article.objects.filter(user_id=request.user) if profile else Article.objects.all() if Article.objects.all() else None
+@register.inclusion_tag('social/user_short_preview.html')
+def get_user_preview_note_list(request):
+	empty_message = 'Здесь пока нет ваших путешествий... Время пополнить список!'
+	notes = Article.objects.filter(user_id=request.user)
 	return {
 		'request': request,
 		'notes': notes,
 		'empty_message': empty_message,
-		'profile': profile
+	}
+
+@register.inclusion_tag('social/short_preview.html')
+def get_preview_note_list(request):
+	empty_message = 'Постов нет'
+	notes = Article.objects.all()
+	return {
+		'request': request,
+		'notes': notes,
+		'empty_message': empty_message,
 	}
 
 @register.inclusion_tag('social/comments.html')
