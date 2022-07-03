@@ -21,7 +21,7 @@ from .views import CreateContentNote, ContentPreviewsView, ContentView, DeleteCo
 
 urlpatterns = [
     path('', ContentPreviewsView.as_view(), name='content-list'),
-	path('note/<note_pk>/',ContentView.as_view(), name='note'),
+	path('note/<int:note_pk>/', ContentView.as_view(), name='note'),
 	path('note/<slug:slug>/<int:note_pk>/', ContentView.as_view()),
 	# path('note/<slug:slug>/',ContentView.as_view(), name='note'),
 	# path('new/', CreateContentNote.as_view(), name='new-post'),
