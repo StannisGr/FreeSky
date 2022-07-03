@@ -1,7 +1,9 @@
 # Project ignore
 **/fixture
-static/media/images/*
-!static/media/images/default
+static/media/images/notes
+static/media/images/uploads
+static/media/images/users
+static/media/images/notes
 /**/migrations/
 
 # Byte-compiled / optimized / DLL files
