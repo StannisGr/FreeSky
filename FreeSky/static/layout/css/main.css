@@ -1,6 +1,6 @@
 /*--------------------MAIN---------------------*/
 .main{
-    flex: 1 1 auto;
+	flex: 1 1 auto;
 }
 .main__main-block {}
 /*---MAIN-BLOCK--*/
@@ -101,7 +101,7 @@ input[type="text" i] {
     top: 0;
     left: 0;
 }
-/*--------------------Result---------------------*/
+/*--------------------SearchResult---------------------*/
 .page__search-result{
 	background-color: #f5f5f5;
 	justify-content: center;
@@ -110,9 +110,8 @@ input[type="text" i] {
 .search-result{
 	padding: 50px 100px;
 }
-.search-result_container{
+.search-result__container{
 	display: flex;
-	max-width: 400px;
 	flex-direction: column;
 	z-index: 2;
 	border-radius: 30px;
@@ -153,7 +152,7 @@ input[type="text" i] {
 .search-result__elem {
 	display: flex;
 	flex-direction: column;
-	max-width: 1000px;
+	min-width: 800px;
 	min-height: 200px;
     margin-bottom: 20px;
 	border-radius: 10px;
@@ -229,4 +228,24 @@ input[type="text" i] {
 .button-selected {
 	background-color: rgb(37, 43, 66);
 	color: #FFF;
+}
+/* SUPPORT  */
+.support-info {
+	display: flex;
+	flex-direction: row;
+	margin-top: 80px;
+	margin-bottom: 80px;
+	justify-content: space-around;
+	gap: 20px;
+}
+/* .support-info >*:not(:last-child){ 
+	margin-right: 140px;
+} */
+.preview_list {
+	display: flex;
+	flex-direction: column;
+
+}
+.preview_list > *:not(:last-child) {
+	margin-bottom: 20px;
 }

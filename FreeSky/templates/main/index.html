@@ -32,12 +32,15 @@
         </div>
     </div>
 	<div class="_container">
-		<div class="main-block__body">
-			<h1 class="main-block__title">Больше о путешествиях</h1>
-			<div class="main-block__text">
-				Узнайте об интересных местах для путешествий
+		<div class="support-info">
+			<div class="preview_list">
+				<div class="main-block__text">Больше о путешествиях</div>
+				<div class="main-block__text">Узнайте об интересных местах</div>
+				{% get_preview_note_list request %}
 			</div>
-			{% get_preview_note_list request %}
+			<div class="preview_list">
+				<div class="main-block__text">Популярные направления</div>
+			</div>
 		</div>
 	</div>
 </main>
