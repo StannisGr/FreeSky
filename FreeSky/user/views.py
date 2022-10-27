@@ -73,38 +73,38 @@ class SingUpView(CreateView):
 
 
 class SingInView(View):
-	form_class = SingInForm
-	success_url = '/'
-	template_name = 'user/signin.html'
+    form_class = SingInForm
+    success_url = '/'
+    template_name = 'user/signin.html'
 
-	standart_redirect = {'/user/signin/', '/user/signup/'}
-	
-	def get(self, request, *args, **kwargs):
-		form = self.form_class(request.GET)
-		return render(request, self.template_name, context={'form': form})
+    standart_redirect = {'/user/signin/', '/user/signup/'}
 
-	def post(self, request, *args, **kwargs):
-		form = self.form_class(request.POST)
-		auth = UserBackend()
-		if form.is_valid():
-			user = auth.authenticate(request, **form.cleaned_data)
-			if user is not None:
-				login(request, user, 'user.backend.UserBackend')
-				return redirect(self.get_success_url())
-			else:
-				return self.error_form_response(request, form)
-		else:
-			return self.error_form_response(request, form)
-		
-	def get_success_url(self):
-		success_url = self.request.GET.get('next', self.success_url)
-		return success_url if success_url not in self.standart_redirect else self.success_url
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(request.GET)
+        return render(request, self.template_name, context={'form': form})
 
-	def error_form_response(self, request, form):
-		context = {
-			'form': form
-		}
-		return render(request, self.template_name, context)
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        auth = UserBackend()
+        if form.is_valid():
+            user = auth.authenticate(request, **form.cleaned_data)
+            if user is not None:
+                login(request, user, 'user.backend.UserBackend')
+                return redirect(self.get_success_url())
+            else:
+                return self.error_form_response(request, form)
+        else:
+            return self.error_form_response(request, form)
+        
+    def get_success_url(self):
+        success_url = self.request.GET.get('next', self.success_url)
+        return success_url if success_url not in self.standart_redirect else self.success_url
+
+    def error_form_response(self, request, form):
+        context = {
+            'form': form
+        }
+        return render(request, self.template_name, context)
 
 class DeleteDocumentView(LoginRequiredMixin, CreateView):
 	success_url = '/'

@@ -1,1 +1,1 @@
-web: gunicorn FreeSky.FreeSky.wsgi
+web: gunicorn wsgi

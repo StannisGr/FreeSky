@@ -162,7 +162,7 @@ STATICFILES_DIRS=[
 ]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media/images/')
-CKEDITOR_UPLOAD_PATH = 'uploads/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -170,6 +170,7 @@ CKEDITOR_UPLOAD_PATH = 'uploads/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #CKEDITOR_CONFIGS
+CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': [
